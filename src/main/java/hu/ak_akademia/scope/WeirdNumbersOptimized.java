@@ -1,5 +1,7 @@
 package hu.ak_akademia.scope;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.*;
 
@@ -19,11 +21,10 @@ import java.util.stream.*;
 
 public class WeirdNumbersOptimized {
     public static void main(String[] args) {
-        long startTime = System.nanoTime();
-        System.out.println(getWeirdNumbers(50_000));
-        long endTime = System.nanoTime();
-        long elapsedTime = endTime - startTime;
-        System.out.println("Feldolgozáshoz szükséges idő: " + elapsedTime / 1_000_000 + " ms");
+        Instant startTime = Instant.now();
+        System.out.println(getWeirdNumbers(15_000));
+        Duration runningTime =Duration.between(startTime, Instant.now());
+        System.out.println("Feldolgozáshoz szükséges idő: " + runningTime.toMillis() + " ms");
     }
 
     public static List<Long> getWeirdNumbers(long limit) {
@@ -52,22 +53,22 @@ public class WeirdNumbersOptimized {
     private static boolean isPseudoPerfectNumber(long n, List<Long> divisors) {
         long abundantNumberRemainder = getAbundantNumberRemainder(n, divisors);
             // perfect number                // every multiple of a semi(pseudo)-perfect number is semi-perfect, the first semi-perfect number is 6
-        if (abundantNumberRemainder == 0 || (abundantNumberRemainder > 0 && n % 6 == 0)) {
-            return true;
-        }
-        if (abundantNumberRemainder > 0) {
-            int sumDivisor = 0;
-            divisors.sort(Collections.reverseOrder());
-            for (Long divisor : divisors) {
-                if (sumDivisor + divisor == abundantNumberRemainder) {
-                    return true;
-                }
-                if (sumDivisor + divisor > abundantNumberRemainder) {
-                    continue;
-                }
-                sumDivisor += divisor;
-            }
-        }
+//        if (abundantNumberRemainder == 0 || (abundantNumberRemainder > 0 && n % 6 == 0)) {
+//            return true;
+//        }
+//        if (abundantNumberRemainder > 0) {
+//            int sumDivisor = 0;
+//            divisors.sort(Collections.reverseOrder());
+//            for (Long divisor : divisors) {
+//                if (sumDivisor + divisor == abundantNumberRemainder) {
+//                    return true;
+//                }
+//                if (sumDivisor + divisor > abundantNumberRemainder) {
+//                    continue;
+//                }
+//                sumDivisor += divisor;
+//            }
+//        }
         if (abundantNumberRemainder > 0) {
             return isRemainingNumberPseudoPerfect(n, divisors);
         }
